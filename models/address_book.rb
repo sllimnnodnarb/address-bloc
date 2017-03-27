@@ -19,7 +19,11 @@ class AddressBook
   end
 
   def remove_entry(name, phone_number, email)
+<<<<<<< HEAD
     selected = nil
+=======
+    var selected = nil
+>>>>>>> address-bloc-models
     @entries.each do |entry|
       if name == entry.name && phone_number == entry.phone_number && email == entry.email
         selected = entry
