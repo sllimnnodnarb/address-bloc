@@ -36,5 +36,4 @@ require_relative '../models/entry'
         expect(entry.to_s).to eq(expected_string)
       end
     end
-
  end

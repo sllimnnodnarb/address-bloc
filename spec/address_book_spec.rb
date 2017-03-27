@@ -53,5 +53,4 @@ RSpec.describe AddressBook do
       expect(book.entries.first.name).to eq('Sam Houston')
     end
   end
-
 end
