@@ -19,7 +19,8 @@ class AddressBook
   end
 
   def remove_entry(name, phone_number, email)
-    var selected = nil
+    selected = nil
+
     @entries.each do |entry|
       if name == entry.name && phone_number == entry.phone_number && email == entry.email
         selected = entry
