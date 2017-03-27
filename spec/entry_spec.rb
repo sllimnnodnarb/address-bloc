@@ -29,12 +29,10 @@ require_relative '../models/entry'
      end
    end
 
-    #5
     describe "#to_s" do
       it "prints an entry as a string" do
         entry = Entry.new('Ada Lovelace', '010.012.1815', 'augusta.king@lovelace.com')
         expected_string = "Name: Ada Lovelace\nPhone Number: 010.012.1815\nEmail: augusta.king@lovelace.com"
-    #6
         expect(entry.to_s).to eq(expected_string)
       end
     end
