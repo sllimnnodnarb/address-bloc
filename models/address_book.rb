@@ -7,6 +7,7 @@ class AddressBook
       @entries = []
     end
 
+  # This inserts the new entry in the list alphabetically
   def add_entry(name, phone_number, email)
     index = 0
     @entries.each do |entry|
@@ -18,13 +19,14 @@ class AddressBook
     @entries.insert(index, Entry.new(name, phone_number, email))
   end
 
+  # deletes the entry if name, phone and email match
   def remove_entry(name, phone_number, email)
     selected = nil
     @entries.each do |entry|
       if name == entry.name && phone_number == entry.phone_number && email == entry.email
         selected = entry
       end
-      @entries.delete(selected)
     end
+    @entries.delete(selected)
   end
 end
