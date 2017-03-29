@@ -16,6 +16,7 @@ class MenuController
     puts "5 - Search for an entry"
     puts "6 - Import entries from a CSV"
     puts "7 - Exit"
+    puts "8 - **ANNIHILATE ALL ENTRIES**"
     print "Enter your selection: "
 
     selection = gets.to_i
@@ -47,6 +48,11 @@ class MenuController
        when 7
          puts "Good-bye!"
          exit(0)
+       when 8
+         system "clear"
+         @address_book.delete_all
+         puts "ANNIHILATED ALL ENTRIES"
+         main_menu
        else
          system "clear"
          puts "Sorry, that is not a valid input"
