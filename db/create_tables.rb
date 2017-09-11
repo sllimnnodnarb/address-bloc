@@ -1,8 +1,8 @@
 require 'sqlite3'
 
 db = SQLite3::Database.new "db/address_bloc.sqlite"
-#db.execute("DROP TABLE address_book IF EXISTS;");
-#db.execute("DROP TABLE entry IF EXISTS;");
+db.execute("DROP TABLE address_book IF EXISTS;");
+db.execute("DROP TABLE entry IF EXISTS;");
 
 db.execute <<-SQL
   CREATE TABLE address_book (

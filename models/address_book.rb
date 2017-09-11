@@ -1,19 +1,19 @@
-require_relative 'entry.rb'
-require 'CSV'
+require_relative 'entry'
+require 'csv'
 require 'bloc_record/base'
 
 class AddressBook < BlocRecord::Base
-  attr_reader :entries
-  # This inserts the new entry in the list alphabetically
-  def add_entry(name, phone_number, email)
-    index = 0
-    @entries.each do |entry|
-      if name < entry.name
-        break
-      end
-      index += 1
-    end
-    @entries.insert(index, Entry.new(name, phone_number, email))
+  attr_accessor :entries
+  def add_entry(name, phone, email)
+    Entry.create(name: name, phone: phone, email: email)
+  end
+
+  def entries
+    Entry.where(address_book_id: self.id)
+  end
+
+  def find_entry(name)
+    Entry.where(name: name, address_book_id: self.id).first
   end
 
   def import_from_csv(file_name)
@@ -26,7 +26,7 @@ class AddressBook < BlocRecord::Base
   end
 
   # deletes the entry if name, phone and email match
-  def remove_entry(name, phone_number, email)
+  def remove_entry(name, phone, email)
     selected = nil
     @entries.each do |entry|
       if name == entry.name && phone_number == entry.phone_number && email == entry.email
@@ -38,26 +38,6 @@ class AddressBook < BlocRecord::Base
 
   def delete_all
     @entries = []
-  end
-
-  def binary_search(name)
-    lower = 0
-    upper = entries.length - 1
-
-    while lower <= upper
-      mid = (lower + upper) / 2
-      mid_name = entries[mid].name
-
-      if name == mid_name
-        return entries[mid]
-      elsif name < mid_name
-        upper = mid - 1
-      elsif name > mid_name
-        lower = mid + 1
-      end
-    end
-
-    return nil
   end
 
   def iterative_search(name)
