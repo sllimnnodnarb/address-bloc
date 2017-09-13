@@ -8,12 +8,12 @@ class MenuController
   end
 
   def main_menu
-    puts "#{@address_book.name} Address Book - #{Entry.count} entries"
+    puts "#{@address_book.name} Selected\n#{@address_book.entries.count} entries"
     puts "0 - Switch AddressBook"
     puts "1 - View all entries"
     puts "2 - View Entry Number n"
     puts "3 - Create an entry"
-    puts "4 - Delete and Entry"
+    puts "4 - Delete an Entry"
     puts "5 - Search for an entry"
     puts "6 - Import entries from a CSV"
     puts "7 - Exit"
@@ -68,7 +68,7 @@ class MenuController
   def select_address_book_menu
     puts "Select an Address Book:"
     AddressBook.all.each_with_index do |address_book, index|
-      puts "#{index} - #{@address_book.name}"
+      puts "#{index} - #{address_book.name}"
     end
     index = gets.chomp.to_i
     @address_book = AddressBook.find(index + 1)
@@ -79,7 +79,7 @@ class MenuController
   end
 
   def view_all_entries
-    Entry.all.each do |entry|
+    @address_book.entries.each do |entry|
       system "clear"
       puts entry.to_s
       entry_submenu(entry)
@@ -120,8 +120,8 @@ class MenuController
   end
 
   def delete_entry(entry)
-    entry.destroy
-    puts "#{entry.name} has been deleted"
+    address_book.entries.delete(entry)
+    puts "#{entry.name} has been deleted."
   end
 
   def edit_entry(entry)
@@ -169,7 +169,7 @@ class MenuController
   def search_entries
     print "Search by name: "
     name = gets.chomp
-    match = Entry.find_by(:name, name)
+    match = @address_book.find_entry(name)
     system "clear"
     if match
       puts match.to_s
