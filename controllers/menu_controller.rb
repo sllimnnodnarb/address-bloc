@@ -28,7 +28,7 @@ class MenuController
         main_menu
       when 1
         system "clear"
-         view_all_entries
+        view_all_entries
         main_menu
       when 2
         system "clear"
@@ -40,7 +40,8 @@ class MenuController
         main_menu
       when 4
         system "clear"
-        delete_entry
+        puts "What entry number would like to delete?"
+        view_entry_number
         main_menu
       when 5
         system "clear"
@@ -55,7 +56,7 @@ class MenuController
         exit(0)
       when 8
         system "clear"
-        @address_book.delete_all
+        @address_book.entries.clear
         puts "ANNIHILATED ALL ENTRIES"
         main_menu
       else
@@ -95,7 +96,8 @@ class MenuController
     n = (gets.chomp.to_i)
     if n < @address_book.entries.count && n > 0
       puts @address_book.entries[n]
-      puts "Press enter to view main menu"
+      entry = n
+      entry_submenu(entry)
       gets.chomp
       system "clear"
     else
@@ -112,35 +114,33 @@ class MenuController
     phone = gets.chomp
     print "Email: "
     email = gets.chomp
-
     @address_book.add_entry(name, phone, email)
-
-    system "clear"
     puts "New entry created"
   end
 
   def delete_entry(entry)
     address_book.entries.delete(entry)
-    puts "#{entry.name} has been deleted."
+    puts "#{entry} has been deleted."
   end
 
   def edit_entry(entry)
+    updates = {}
     print "Updated name: "
     name = gets.chomp
+    updates[:name] = name unless name.empty?
     print "Updated phone number: "
     phone_number = gets.chomp
+    updates[:phone_number] = phone_number unless phone_number.empty?
     print "Updated email: "
     email = gets.chomp
-    entry.name = name if !name.empty?
-    entry.phone_number = phone_number if !phone_number.empty?
-    entry.email = email if !email.empty?
+    updates[:email] = email unless email.empty?
+    entry.update_attributes(updates)
     system "clear"
     puts "Updated entry:"
-    puts entry
+    puts Entry.find(entry.id)
   end
 
   def entry_submenu(entry)
-    puts "n - next entry"
     puts "d - delete entry"
     puts "e - edit this entry"
     puts "m - return to main menu"
@@ -149,11 +149,12 @@ class MenuController
 
     case selection
       when "d"
-        system "clear"
         delete_entry(entry)
+        system "clear"
         main_menu
       when "e"
         edit_entry(entry)
+        entry_submenu(entry)
         system "clear"
         main_menu
       when "m"
@@ -177,6 +178,8 @@ class MenuController
     else
       puts "No match found for #{name}"
     end
+    entry = match
+    search_submenu(entry)
   end
 
   def search_submenu(entry)

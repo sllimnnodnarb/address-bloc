@@ -3,7 +3,7 @@ require 'csv'
 require 'bloc_record/base'
 
 class AddressBook < BlocRecord::Base
-  
+
   def add_entry(name, phone, email)
     Entry.create(name: name, phone: phone, email: email)
   end
@@ -21,7 +21,7 @@ class AddressBook < BlocRecord::Base
     csv = CSV.parse(csv_text, headers: true, skip_blanks: true)
     csv.each do |row|
       row_hash = row.to_hash
-      add_entry(row_hash["name"], row_hash["phone_number"], row_hash["email"])
+      add_entry(row_hash["name"], row_hash["phone"], row_hash["email"])
     end
   end
 
@@ -29,7 +29,7 @@ class AddressBook < BlocRecord::Base
   def remove_entry(name, phone, email)
     selected = nil
     @entries.each do |entry|
-      if name == entry.name && phone_number == entry.phone_number && email == entry.email
+      if name == entry.name && phone == entry.phone && email == entry.email
         selected = entry
       end
     end
