@@ -9,7 +9,9 @@ class MenuController
 
   def main_menu
     puts "#{@address_book.name} Selected\n#{@address_book.entries.count} entries"
-    puts "0 - Switch AddressBook"
+    puts "Main Menu - #{@address_book.entries.count} entries"
+    puts "#{@address_book.name} Address Book - #{Entry.count} entries"
+    puts "0 - Select and address book"
     puts "1 - View all entries"
     puts "2 - View Entry Number n"
     puts "3 - Create an entry"
@@ -114,12 +116,12 @@ class MenuController
     phone = gets.chomp
     print "Email: "
     email = gets.chomp
-    @address_book.add_entry(name, phone, email)
+    address_book.add_entry(name, phone, email)
     puts "New entry created"
   end
 
   def delete_entry(entry)
-    address_book.entries.delete(entry)
+    entry.destroy
     puts "#{entry} has been deleted."
   end
 
@@ -144,19 +146,13 @@ class MenuController
     puts "d - delete entry"
     puts "e - edit this entry"
     puts "m - return to main menu"
-
     selection = gets.chomp
-
     case selection
       when "d"
         delete_entry(entry)
-        system "clear"
-        main_menu
       when "e"
         edit_entry(entry)
         entry_submenu(entry)
-        system "clear"
-        main_menu
       when "m"
         system "clear"
         main_menu
@@ -209,5 +205,22 @@ class MenuController
   end
 
   def read_csv
+    print "Enter CSV file to import: "
+    file_name = gets.chomp
+
+    if file_name.empty?
+      system "clear"
+      puts "No CSV file read"
+      main_menu
+    end
+
+    begin
+      entry_count = address_book.import_from_csv(file_name).count
+      system "clear"
+      puts "#{entry_count} new entries added from #{file_name}"
+    rescue
+      puts "#{file_name} is not a valid CSV file, please enter the name of a valid CSV file"
+      read_csv
+    end
   end
 end

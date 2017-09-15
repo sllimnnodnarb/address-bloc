@@ -4,8 +4,8 @@ require 'bloc_record/base'
 
 class AddressBook < BlocRecord::Base
 
-  def add_entry(name, phone, email)
-    Entry.create(name: name, phone: phone, email: email)
+  def add_entry(name, phone_number, email)
+    Entry.create(name: name, phone_number: phone_number, email: email, address_book_id: self.id)
   end
 
   def entries
@@ -23,30 +23,6 @@ class AddressBook < BlocRecord::Base
       row_hash = row.to_hash
       add_entry(row_hash["name"], row_hash["phone"], row_hash["email"])
     end
-  end
-
-  # deletes the entry if name, phone and email match
-  def remove_entry(name, phone, email)
-    selected = nil
-    @entries.each do |entry|
-      if name == entry.name && phone == entry.phone && email == entry.email
-        selected = entry
-      end
-    end
-    @entries.delete(selected)
-  end
-
-  def delete_all
-    @entries = []
-  end
-
-  def iterative_search(name)
-    entries.each do |entry|
-      if entry.name == name
-        return entry
-      end
-    end
-    return nil
   end
 
 end

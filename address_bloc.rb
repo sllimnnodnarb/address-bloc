@@ -1,4 +1,4 @@
-require_relative "controllers/menu_controller"
+require_relative 'controllers/menu_controller'
 require 'bloc_record'
 
 BlocRecord.connect_to("db/address_bloc.sqlite")
