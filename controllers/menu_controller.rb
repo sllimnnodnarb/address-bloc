@@ -8,10 +8,8 @@ class MenuController
   end
 
   def main_menu
-    puts "#{@address_book.name} Selected\n#{@address_book.entries.count} entries"
-    puts "Main Menu - #{@address_book.entries.count} entries"
     puts "#{@address_book.name} Address Book - #{Entry.count} entries"
-    puts "0 - Select and address book"
+    puts "0 - Select an address book"
     puts "1 - View all entries"
     puts "2 - View Entry Number n"
     puts "3 - Create an entry"
@@ -84,6 +82,7 @@ class MenuController
   def view_all_entries
     @address_book.entries.each do |entry|
       system "clear"
+      puts "Address Book: #{entry.address_book.name} Entry"
       puts entry.to_s
       entry_submenu(entry)
     end
@@ -122,7 +121,7 @@ class MenuController
 
   def delete_entry(entry)
     entry.destroy
-    puts "#{entry} has been deleted."
+    puts "Entry has been deleted."
   end
 
   def edit_entry(entry)
@@ -150,6 +149,7 @@ class MenuController
     case selection
       when "d"
         delete_entry(entry)
+        entry_submenu(entry)
       when "e"
         edit_entry(entry)
         entry_submenu(entry)
